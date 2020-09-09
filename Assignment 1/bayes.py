@@ -72,7 +72,7 @@ class Bayes:
         posterior = []
         for prior in priors:
             # INCORRECT
-            likelihood = self.likelihood(hypothesis=observation, prior)
+            likelihood = self.likelihood(observation, prior)
             normalization = self.norm_constant(observation)
             post = (prior * likelihood) / normalization
             posterior.append(post)
