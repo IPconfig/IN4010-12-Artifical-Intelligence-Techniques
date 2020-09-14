@@ -8,13 +8,12 @@ class Bayes:
             hypos (list): list of hypotheses
             priors (list): list of priors of the hypotheses
             obs (list): list of possible observations
-            likelihood (array): A double array returning the probability. The first index is for the hypotheses, the second index for the observation
+            likelihood (array): A double array returning the probability. The first index is for the hypothesis, the second index for the observation
         """
         self.hypos = hypos
         self.priors = priors
         self.obs = obs
         self.probabilities = probabilities
-
 
     def likelihood(self, observation, hypothesis):
         """
@@ -34,7 +33,7 @@ class Bayes:
         except ValueError:
             print("Observation or Hypothesis value not found in list")
             return None
-    
+
     def norm_constant(self, observation, priors=None):
         """
         Returns the probability of the observation under any hypothesis P(O).
@@ -57,7 +56,6 @@ class Bayes:
             constant += probability
         return constant
 
-    # TODO: excerise 4
     def single_posterior_update(self, observation, priors):
         """
         Calculates the probability of the hypothesis after an observation P(H|O)
@@ -69,16 +67,14 @@ class Bayes:
         Returns:
             List: list of posterior probabilities
         """
-        posterior = []
-        for prior in priors:
-            # INCORRECT
-            likelihood = self.likelihood(observation, prior)
+        posterior_list = []
+        for hypothesis, prior in zip(self.hypos, priors):
+            likelihood = self.likelihood(observation, hypothesis)
             normalization = self.norm_constant(observation)
-            post = (prior * likelihood) / normalization
-            posterior.append(post)
-        return posterior
+            posterior = (prior * likelihood) / normalization
+            posterior_list.append(posterior)
+        return posterior_list
 
-    # TODO: Check implementation of exercise 5
     def compute_posterior(self, observations):
         """
         Calculates the posterior probabilites based on an observation. Priors are already given
@@ -89,7 +85,6 @@ class Bayes:
         Returns:
             List: list of posterior probabilities
         """
-        posteriors = []
         for observation in observations:
-            posteriors.append(self.single_posterior_update(observation, self.priors))
+            posteriors = (self.single_posterior_update(observation, self.priors))
             return posteriors
