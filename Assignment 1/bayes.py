@@ -1,3 +1,6 @@
+import math  # added in python 3.8
+
+
 class Bayes:
     'Class for mathematical operations using Bayes rule'
     def __init__(self, hypos, priors, obs, probabilities):
@@ -77,14 +80,22 @@ class Bayes:
 
     def compute_posterior(self, observations):
         """
-        Calculates the posterior probabilites based on an observation. Priors are already given
+        Calculates the posterior probabilites based on a list of observations.
 
         Parameters:
-            observations (String): List of observation from the list of observations
+            observations (String): List of observations
 
         Returns:
-            List: list of posterior probabilities
+            List: list of posterior probabilities per hypothesis
         """
-        for observation in observations:
-            posteriors = (self.single_posterior_update(observation, self.priors))
-            return posteriors
+        posteriors = []
+        for hypothesis, prior in zip(self.hypos, self.priors):
+            likelihood_per_observation = []
+            normalization_per_observation = []
+            for observation in observations:
+                likelihood_per_observation.append(self.likelihood(observation, hypothesis))
+                normalization_per_observation.append(self.norm_constant(observation))
+            likelihood_per_hypothesis = math.prod(likelihood_per_observation)
+            normalization_per_hypothesis = math.prod(normalization_per_observation)
+            posteriors.append(prior * likelihood_per_hypothesis / normalization_per_hypothesis)
+        return posteriors

@@ -23,7 +23,7 @@ print("chocolate, vanilla - posterior: %s" % p_2)
 
 # Archery Problem
 arch_hypothesis = ["Beginner", "Intermediate", "Advanced", "Expert"]
-arch_priors = [0.25, 0.25, 0.25, 0.25, 0.25]
+arch_priors = [0.25, 0.25, 0.25, 0.25]
 arch_observations = ["Yellow", "Red", "Blue", "Black", "White"]
 arch_Likelihood = [[0.05, 0.1, 0.4, 0.25, 0.2],
                    [0.1, 0.2, 0.4, 0.2, 0.1],
