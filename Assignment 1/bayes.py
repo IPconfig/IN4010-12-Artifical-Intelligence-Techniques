@@ -37,9 +37,9 @@ class Bayes:
             print("Observation or Hypothesis value not found in list")
             return None
 
-    def norm_constant(self, observation, priors=None):
+    def norm_constant(self, observation):
         """
-        Returns the probability of the observation under any hypothesis P(O).
+        Returns the probability of the observation under any hypothesis.
 
         Parameters:
             observation (String): one observation from the list of observations
@@ -51,9 +51,7 @@ class Bayes:
         # is created by summing over each hypothesis where
         # total probability of hypothesis * conditional probability of observation given hypothesis
         constant = 0
-        if priors is None:
-            priors = self.priors
-        for hypothesis, prior in zip(self.hypos, priors):
+        for hypothesis, prior in zip(self.hypos, self.priors):
             # TODO: are we allowed to use priors here? or should we calculate based on prob array
             probability = prior * self.likelihood(observation, hypothesis)
             constant += probability
@@ -61,11 +59,11 @@ class Bayes:
 
     def single_posterior_update(self, observation, priors):
         """
-        Calculates the probability of the hypothesis after an observation P(H|O)
+        Calculates the probability of the hypothesis after one observation
 
         Parameters:
-            observation (String): one observation from the list of observations. e.g. vanilla
-            priors (list): probability of hypothesis before any observations P(H) e.g. [0.5, 0.5]
+            observation (String): one observation from the list of observations.
+            priors (list): probability of hypothesis before any observations
 
         Returns:
             List: list of posterior probabilities
