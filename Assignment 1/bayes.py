@@ -40,16 +40,11 @@ class Bayes:
 
         Parameters:
             observation (String): one observation from the list of observations
-            priors (List): list of priors. Optional, default is self.priors
 
         Returns:
             Float: Normalizing constant P(O)
         """
-        # is created by summing over each hypothesis where
-        # total probability of hypothesis * conditional probability of observation given hypothesis
         constant = 0
-        # if priors is None:
-        #     priors = self.priors
         for hypothesis, prior in zip(self.hypos, self.priors):
             probability = prior * self.likelihood(observation, hypothesis)
             constant += probability
@@ -87,5 +82,5 @@ class Bayes:
         posteriors = self.priors  # there are no observations made yet
         for observation in observations:
             posteriors = self.single_posterior_update(observation, posteriors)
-            self.priors = posteriors
+            self.priors = posteriors  # update self.priors to previous computed posteriors
         return posteriors
