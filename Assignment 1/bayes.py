@@ -1,6 +1,3 @@
-import math  # added in python 3.8
-
-
 class Bayes:
     'Class for mathematical operations using Bayes rule'
     def __init__(self, hypos, priors, obs, probabilities):
@@ -51,8 +48,9 @@ class Bayes:
         # is created by summing over each hypothesis where
         # total probability of hypothesis * conditional probability of observation given hypothesis
         constant = 0
+        # if priors is None:
+        #     priors = self.priors
         for hypothesis, prior in zip(self.hypos, self.priors):
-            # TODO: are we allowed to use priors here? or should we calculate based on prob array
             probability = prior * self.likelihood(observation, hypothesis)
             constant += probability
         return constant
@@ -68,13 +66,13 @@ class Bayes:
         Returns:
             List: list of posterior probabilities
         """
-        posterior_list = []
+        posterior = []
         for hypothesis, prior in zip(self.hypos, priors):
             likelihood = self.likelihood(observation, hypothesis)
             normalization = self.norm_constant(observation)
-            posterior = (prior * likelihood) / normalization
-            posterior_list.append(posterior)
-        return posterior_list
+            post = (prior * likelihood) / normalization
+            posterior.append(post)
+        return posterior
 
     def compute_posterior(self, observations):
         """
@@ -86,14 +84,8 @@ class Bayes:
         Returns:
             List: list of posterior probabilities per hypothesis
         """
-        posteriors = []
-        for hypothesis, prior in zip(self.hypos, self.priors):
-            likelihood_per_observation = []
-            normalization_per_observation = []
-            for observation in observations:
-                likelihood_per_observation.append(self.likelihood(observation, hypothesis))
-                normalization_per_observation.append(self.norm_constant(observation))
-            likelihood_per_hypothesis = math.prod(likelihood_per_observation)
-            normalization_per_hypothesis = math.prod(normalization_per_observation)
-            posteriors.append(prior * likelihood_per_hypothesis / normalization_per_hypothesis)
+        posteriors = self.priors  # there are no observations made yet
+        for observation in observations:
+            posteriors = self.single_posterior_update(observation, posteriors)
+            self.priors = posteriors
         return posteriors
