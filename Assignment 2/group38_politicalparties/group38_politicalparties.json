@@ -1,0 +1,29 @@
+{
+	"name": "group38_politicalparties",
+	"issuesValues": {
+		"Covid measurements": {
+			"values": [
+				"Complete Lockdown",
+				"Face masks recommended",
+				"Natural selection",
+				"Social Distancing"
+			]
+		},
+		"Climate change": {
+			"values": [
+				"Does not exist",
+				"Can not be prevented",
+				"Pretend it does not exists",
+				"We will think about it"
+			]
+		},
+		"Gun policy": {
+			"values": [
+				"Available for everyone",
+				"Only for police",
+				"Test required",
+				"Available in violent regions"
+			]
+		}
+	}
+}

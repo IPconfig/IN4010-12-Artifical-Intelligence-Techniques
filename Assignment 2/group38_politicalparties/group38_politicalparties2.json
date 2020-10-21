@@ -1,0 +1,70 @@
+{
+	"LinearAdditiveUtilitySpace": {
+		"name": "group38_politicalparties1",
+		"issueUtilities": {
+			"Covid measurements": {
+				"discreteutils": {
+					"valueUtilities": {
+						"Complete Lockdown": 0.74,
+						"Face masks recommended": 0.33,
+						"Natural selection": 0.29,
+						"Social Distancing": 0.528
+					}
+				}
+			},
+			"Climate change": {
+				"discreteutils": {
+					"valueUtilities": {
+						"Does not exist": 0.48,
+						"Can not be prevented": 1,
+						"Pretend it does not exists": 0.74,
+						"We will think about it": 0.24					}
+				}
+			},
+			"Gun policy": {
+				"discreteutils": {
+					"valueUtilities": {
+						"Available for everyone": 0.88,
+						"Only for police": 0.32,
+						"Test required": 0.48,
+						"Available in violent regions": 0.19
+					}
+				}
+			}
+		},
+		"issueWeights": {
+			"Covid measurements": 0.55,
+			"Climate change": 0.14,
+			"Gun policies": 0.31
+		},
+		"domain": {
+			"name": "group38_politicalparties",
+			"issuesValues": {
+				"Covid measurements": {
+					"values": [
+						"Complete Lockdown",
+						"Face masks recommended",
+						"Natural selection",
+						"Social Distancing"
+						]
+					},
+				"Climate change": {
+					"values": [
+						"Does not exist",
+						"Can not be prevented",
+						"Pretend it does not exists",
+						"We will think about it"
+						]
+					},
+				"Gun policy": {
+					"values": [
+						"Available for everyone",
+						"Only for police",
+						"Test required",
+						"Available in violent regions"
+					]
+				}
+			}
+		}
+	}
+}
