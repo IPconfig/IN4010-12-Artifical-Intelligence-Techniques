@@ -1,6 +1,6 @@
 {
 	"LinearAdditiveUtilitySpace": {
-		"name": "group38_politicalparties1",
+		"name": "group38politicalparties1",
 		"issueUtilities": {
 			"Covid measurements": {
 				"discreteutils": {
@@ -35,10 +35,10 @@
 		"issueWeights": {
 			"Covid measurements": 0.19,
 			"Climate change": 0.48,
-			"Gun policies": 0.33
+			"Gun policy": 0.33
 		},
 		"domain": {
-			"name": "group38_politicalparties",
+			"name": "group38politicalparties",
 			"issuesValues": {
 				"Covid measurements": {
 					"values": [
