@@ -5,7 +5,7 @@
 
 	<groupId>geniusweb.exampleparties</groupId>
 	<artifactId>randompyparty</artifactId>
-	<version>1.5.3</version> <!-- must equal ${geniusweb.version} -->
+	<version>1.5.5</version> <!-- must equal ${geniusweb.version} -->
 	<packaging>jar</packaging>
 
 
@@ -16,7 +16,7 @@
 		<basedir>.</basedir>
 		<passwd>${env.ARTIFACTORY_PASS}</passwd>
 		<jackson-2-version>2.9.10</jackson-2-version>
-		<geniusweb.version>1.5.3</geniusweb.version>
+		<geniusweb.version>1.5.5</geniusweb.version>
 	</properties>
 
 	<distributionManagement>
