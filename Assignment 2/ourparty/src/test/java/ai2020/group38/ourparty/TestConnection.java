@@ -1,4 +1,4 @@
-package geniusweb.exampleparties.timedependentparty;
+package ai2020.group38.ourparty;
 
 import java.io.IOException;
 import java.net.URI;

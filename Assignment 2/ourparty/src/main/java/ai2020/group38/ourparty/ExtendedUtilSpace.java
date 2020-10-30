@@ -1,9 +1,4 @@
-package geniusweb.exampleparties.timedependentparty;
-
-import java.math.BigDecimal;
-import java.math.BigInteger;
-import java.util.Collections;
-import java.util.LinkedList;
+package ai2020.group38.ourparty;
 
 import geniusweb.bidspace.BidsWithUtility;
 import geniusweb.bidspace.Interval;
@@ -12,6 +7,11 @@ import geniusweb.issuevalue.Bid;
 import geniusweb.issuevalue.Value;
 import geniusweb.profile.utilityspace.LinearAdditive;
 import tudelft.utilities.immutablelist.ImmutableList;
+
+import java.math.BigDecimal;
+import java.math.BigInteger;
+import java.util.Collections;
+import java.util.LinkedList;
 
 /**
  * Inner class for TimeDependentParty, made public for testing purposes. This
@@ -63,7 +63,7 @@ public class ExtendedUtilSpace {
 	 * Tolerance is the Interval we need when searching bids. When we are close
 	 * to the maximum utility, this value has to be the distance between the
 	 * best and one-but-best utility.
-	 * 
+	 *
 	 * @return the minimum tolerance required, which is the minimum difference
 	 *         between the weighted utility of the best and one-but-best issue
 	 *         value.

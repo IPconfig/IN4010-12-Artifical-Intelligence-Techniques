@@ -57,7 +57,7 @@
 			<version>1.1.1</version>
 		</dependency>
 
-		<!-- the core, which includes Streaming API, shared low-level abstractions 
+		<!-- the core, which includes Streaming API, shared low-level abstractions
 			(but NOT data-binding) -->
 		<dependency>
 			<groupId>com.fasterxml.jackson.core</groupId>
@@ -66,7 +66,7 @@
 			<scope>test</scope>
 		</dependency>
 
-		<!-- Just the annotations; use this dependency if you want to attach annotations 
+		<!-- Just the annotations; use this dependency if you want to attach annotations
 			to classes without connecting them to the code. -->
 		<dependency>
 			<groupId>com.fasterxml.jackson.core</groupId>
@@ -178,7 +178,7 @@
 				<configuration>
 					<archive>
 						<manifest>
-							<mainClass>geniusweb.exampleparties.timedependentparty.TimeDependentParty</mainClass>
+							<mainClass>TimeDependentParty</mainClass>
 						</manifest>
 					</archive>
 				</configuration>
@@ -233,7 +233,7 @@
 						<manifest>
 							<addDefaultImplementationEntries>true</addDefaultImplementationEntries>
 							<addDefaultSpecificationEntries>true</addDefaultSpecificationEntries>
-							<mainClass>geniusweb.exampleparties.timedependentparty.TimeDependentParty</mainClass>
+							<mainClass>TimeDependentParty</mainClass>
 						</manifest>
 					</archive>
 				</configuration>

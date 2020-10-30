@@ -1,29 +1,7 @@
-package geniusweb.exampleparties.timedependentparty;
+package ai2020.group38.ourparty;
 
-import java.io.IOException;
-import java.math.BigDecimal;
-import java.math.BigInteger;
-import java.math.RoundingMode;
-import java.util.Arrays;
-import java.util.HashSet;
-import java.util.Random;
-import java.util.Set;
-import java.util.logging.Level;
-import java.util.stream.Collectors;
-
-import geniusweb.actions.Accept;
-import geniusweb.actions.Action;
-import geniusweb.actions.Offer;
-import geniusweb.actions.PartyId;
-import geniusweb.actions.Vote;
-import geniusweb.actions.Votes;
-import geniusweb.inform.ActionDone;
-import geniusweb.inform.Finished;
-import geniusweb.inform.Inform;
-import geniusweb.inform.OptIn;
-import geniusweb.inform.Settings;
-import geniusweb.inform.Voting;
-import geniusweb.inform.YourTurn;
+import geniusweb.actions.*;
+import geniusweb.inform.*;
 import geniusweb.issuevalue.Bid;
 import geniusweb.party.Capabilities;
 import geniusweb.party.DefaultParty;
@@ -37,12 +15,23 @@ import geniusweb.progress.ProgressRounds;
 import tudelft.utilities.immutablelist.ImmutableList;
 import tudelft.utilities.logging.Reporter;
 
+import java.io.IOException;
+import java.math.BigDecimal;
+import java.math.BigInteger;
+import java.math.RoundingMode;
+import java.util.Arrays;
+import java.util.HashSet;
+import java.util.Random;
+import java.util.Set;
+import java.util.logging.Level;
+import java.util.stream.Collectors;
+
 /**
  * General time dependent party. This is a simplistic implementation that does
  * brute-force search through the bidspace and can handle bidspace sizes up to
  * 2^31 (approx 1 billion bids). It may take excessive time and run out of time
  * on bidspaces &gt; 10000 bids. In special cases it may even run out of memory,
- * 
+ *
  * <p>
  * Supports parameters as follows
  * <table summary="parameters">
@@ -52,19 +41,19 @@ import tudelft.utilities.logging.Reporter;
  * around 1. 0 means no concession, 1 linear concession, &gt;1 faster than
  * linear concession.</td>
  * </tr>
- * 
+ *
  * <tr>
  * <td>minPower</td>
  * <td>This value is used as minPower for placed {@link Vote}s. Default value is
  * 1.</td>
  * </tr>
- * 
+ *
  * <tr>
  * <td>maxPower</td>
  * <td>This value is used as maxPower for placed {@link Vote}s. Default value is
  * infinity.</td>
  * </tr>
- * 
+ *
  * </table>
  * <p>
  * TimeDependentParty requires a {@link UtilitySpace}
@@ -138,16 +127,16 @@ public class TimeDependentParty extends DefaultParty {
 	 * @return the E value that controls the party's behaviour. Depending on the
 	 *         value of e, extreme sets show clearly different patterns of
 	 *         behaviour [1]:
-	 * 
+	 *
 	 *         1. Boulware: For this strategy e &lt; 1 and the initial offer is
 	 *         maintained till time is almost exhausted, when the agent concedes
 	 *         up to its reservation value.
-	 * 
+	 *
 	 *         2. Conceder: For this strategy e &gt; 1 and the agent goes to its
 	 *         reservation value very quickly.
-	 * 
+	 *
 	 *         3. When e = 1, the price is increased linearly.
-	 * 
+	 *
 	 *         4. When e = 0, the agent plays hardball.
 	 */
 	public double getE() {
@@ -167,7 +156,7 @@ public class TimeDependentParty extends DefaultParty {
 	/**
 	 * Update {@link #progress}, depending on the protocol and last received
 	 * {@link Inform}
-	 * 
+	 *
 	 * @param info the received info.
 	 */
 	private void updateRound(Inform info) {
@@ -241,7 +230,7 @@ public class TimeDependentParty extends DefaultParty {
 	}
 
 	/**
-	 * 
+	 *
 	 * @param t       the time in [0,1] where 0 means start of nego and 1 the
 	 *                end of nego (absolute time/round limit)
 	 * @param e       the e value that determinses how fast the party makes
@@ -265,7 +254,7 @@ public class TimeDependentParty extends DefaultParty {
 
 	/**
 	 * @param voting the {@link Voting} object containing the options
-	 * 
+	 *
 	 * @return our next Votes.
 	 */
 	private Votes vote(Voting voting) throws IOException {

@@ -1,4 +1,4 @@
-package geniusweb.exampleparties.timedependentparty;
+package ai2020.group38.ourparty;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
