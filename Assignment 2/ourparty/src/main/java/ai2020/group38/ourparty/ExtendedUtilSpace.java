@@ -1,5 +1,10 @@
 package ai2020.group38.ourparty;
 
+import java.math.BigDecimal;
+import java.math.BigInteger;
+import java.util.Collections;
+import java.util.LinkedList;
+
 import geniusweb.bidspace.BidsWithUtility;
 import geniusweb.bidspace.Interval;
 import geniusweb.bidspace.IssueInfo;
@@ -7,11 +12,6 @@ import geniusweb.issuevalue.Bid;
 import geniusweb.issuevalue.Value;
 import geniusweb.profile.utilityspace.LinearAdditive;
 import tudelft.utilities.immutablelist.ImmutableList;
-
-import java.math.BigDecimal;
-import java.math.BigInteger;
-import java.util.Collections;
-import java.util.LinkedList;
 
 /**
  * Inner class for TimeDependentParty, made public for testing purposes. This

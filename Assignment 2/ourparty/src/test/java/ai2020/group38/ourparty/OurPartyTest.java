@@ -1,13 +1,25 @@
 package ai2020.group38.ourparty;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertFalse;
-import static org.junit.Assert.assertNotNull;
-import static org.junit.Assert.assertTrue;
-import static org.mockito.Matchers.eq;
-import static org.mockito.Mockito.mock;
-import static org.mockito.Mockito.verify;
-import static org.mockito.Mockito.when;
+import com.fasterxml.jackson.core.JsonParseException;
+import com.fasterxml.jackson.databind.JsonMappingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import geniusweb.actions.Accept;
+import geniusweb.actions.EndNegotiation;
+import geniusweb.actions.Offer;
+import geniusweb.actions.PartyId;
+import geniusweb.bidspace.AllBidsList;
+import geniusweb.inform.*;
+import geniusweb.issuevalue.Bid;
+import geniusweb.party.Capabilities;
+import geniusweb.profile.Profile;
+import geniusweb.profile.utilityspace.LinearAdditiveUtilitySpace;
+import geniusweb.progress.ProgressRounds;
+import geniusweb.references.Parameters;
+import geniusweb.references.ProfileRef;
+import geniusweb.references.ProtocolRef;
+import org.junit.Before;
+import org.junit.Test;
+import tudelft.utilities.logging.Reporter;
 
 import java.io.IOException;
 import java.math.BigDecimal;
@@ -18,41 +30,18 @@ import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.util.logging.Level;
 
-import org.junit.Before;
-import org.junit.Test;
+import static org.junit.Assert.*;
+import static org.mockito.Matchers.eq;
+import static org.mockito.Mockito.*;
 
-import com.fasterxml.jackson.core.JsonParseException;
-import com.fasterxml.jackson.databind.JsonMappingException;
-import com.fasterxml.jackson.databind.ObjectMapper;
-
-import geniusweb.actions.Accept;
-import geniusweb.actions.EndNegotiation;
-import geniusweb.actions.Offer;
-import geniusweb.actions.PartyId;
-import geniusweb.bidspace.AllBidsList;
-import geniusweb.inform.ActionDone;
-import geniusweb.inform.Agreements;
-import geniusweb.inform.Finished;
-import geniusweb.inform.Settings;
-import geniusweb.inform.YourTurn;
-import geniusweb.issuevalue.Bid;
-import geniusweb.party.Capabilities;
-import geniusweb.profile.Profile;
-import geniusweb.profile.utilityspace.LinearAdditiveUtilitySpace;
-import geniusweb.progress.ProgressRounds;
-import geniusweb.references.Parameters;
-import geniusweb.references.ProfileRef;
-import geniusweb.references.ProtocolRef;
-import tudelft.utilities.logging.Reporter;
-
-public class TimeDependentPartyTest {
+public class OurPartyTest {
 
 	private static final String SAOP = "SAOP";
 	private static final PartyId otherparty = new PartyId("other");
 	private static final String PROFILE = "src/test/resources/testprofile.json";
 	private final static ObjectMapper jackson = new ObjectMapper();
 
-	private TimeDependentParty party;
+	private OurParty party;
 	private TestConnection connection = new TestConnection();
 	private ProtocolRef protocol = new ProtocolRef("SAOP");
 	private ProgressRounds progress = mock(ProgressRounds.class);
@@ -63,7 +52,7 @@ public class TimeDependentPartyTest {
 	@Before
 	public void before() throws JsonParseException, JsonMappingException,
 			IOException, URISyntaxException {
-		party = new TimeDependentParty() {
+		party = new OurParty() {
 
 			@Override
 			public String getDescription() {
@@ -161,7 +150,7 @@ public class TimeDependentPartyTest {
 	public void testPartyLogsFinal() {
 		// this log output is optional, this is to show how to check log
 		Reporter reporter = mock(Reporter.class);
-		party = new TimeDependentParty(reporter) {
+		party = new OurParty(reporter) {
 
 			@Override
 			public String getDescription() {
@@ -200,7 +189,7 @@ public class TimeDependentPartyTest {
 
 	@Test
 	public void testUtilityTarget() {
-		TimeDependentParty tdp = new TimeDependentParty();
+		OurParty tdp = new OurParty();
 		BigDecimal N02 = new BigDecimal("0.2");
 		BigDecimal N043 = new BigDecimal("0.42521212");
 		BigDecimal goal = tdp.getUtilityGoal(0.1, 1.2, N02, N043);

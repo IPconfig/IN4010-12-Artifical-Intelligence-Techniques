@@ -1,33 +1,9 @@
 package ai2020.group38.ourparty;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertTrue;
-import static org.mockito.Mockito.mock;
-
-import java.io.IOException;
-import java.math.BigDecimal;
-import java.net.URI;
-import java.net.URISyntaxException;
-import java.nio.charset.StandardCharsets;
-import java.nio.file.Files;
-import java.nio.file.Paths;
-import java.util.Arrays;
-import java.util.Collections;
-import java.util.HashMap;
-import java.util.Map;
-
-import org.junit.Before;
-import org.junit.Test;
-
 import com.fasterxml.jackson.core.JsonParseException;
 import com.fasterxml.jackson.databind.JsonMappingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
-
-import geniusweb.actions.Action;
-import geniusweb.actions.Offer;
-import geniusweb.actions.PartyId;
-import geniusweb.actions.Vote;
-import geniusweb.actions.Votes;
+import geniusweb.actions.*;
 import geniusweb.inform.OptIn;
 import geniusweb.inform.Settings;
 import geniusweb.inform.Voting;
@@ -42,8 +18,26 @@ import geniusweb.progress.ProgressRounds;
 import geniusweb.references.Parameters;
 import geniusweb.references.ProfileRef;
 import geniusweb.references.ProtocolRef;
+import org.junit.Before;
+import org.junit.Test;
 
-public class TimeDependentPartyMOPACTest {
+import java.io.IOException;
+import java.math.BigDecimal;
+import java.net.URI;
+import java.net.URISyntaxException;
+import java.nio.charset.StandardCharsets;
+import java.nio.file.Files;
+import java.nio.file.Paths;
+import java.util.Arrays;
+import java.util.Collections;
+import java.util.HashMap;
+import java.util.Map;
+
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertTrue;
+import static org.mockito.Mockito.mock;
+
+public class OurPartyMOPACTest {
 
 	private static final PartyId me = new PartyId("me");
 	private static final PartyId otherparty = new PartyId("other");
@@ -51,7 +45,7 @@ public class TimeDependentPartyMOPACTest {
 	private static final String PROFILE = "src/test/resources/testprofile.json";
 	private final static ObjectMapper jackson = new ObjectMapper();
 
-	private TimeDependentParty party;
+	private OurParty party;
 	private TestConnection connection = new TestConnection();
 	private ProtocolRef protocol = new ProtocolRef("MOPAC");
 	private ProgressRounds progress = mock(ProgressRounds.class);
@@ -67,7 +61,7 @@ public class TimeDependentPartyMOPACTest {
 		powers.put(me, 1);
 		powers.put(otherparty, 1);
 
-		party = new TimeDependentParty() {
+		party = new OurParty() {
 
 			@Override
 			public String getDescription() {

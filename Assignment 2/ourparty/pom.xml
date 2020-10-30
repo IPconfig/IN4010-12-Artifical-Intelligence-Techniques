@@ -3,8 +3,8 @@
 	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
 	<modelVersion>4.0.0</modelVersion>
 
-	<groupId>geniusweb.exampleparties</groupId>
-	<artifactId>timedependentparty</artifactId>
+	<groupId>ai2020.group38</groupId>
+	<artifactId>ourparty</artifactId>
 	<version>1.5.5</version> <!-- must equal ${geniusweb.version} -->
 	<packaging>jar</packaging>
 
@@ -178,7 +178,7 @@
 				<configuration>
 					<archive>
 						<manifest>
-							<mainClass>TimeDependentParty</mainClass>
+							<mainClass>OurParty</mainClass>
 						</manifest>
 					</archive>
 				</configuration>
@@ -233,7 +233,7 @@
 						<manifest>
 							<addDefaultImplementationEntries>true</addDefaultImplementationEntries>
 							<addDefaultSpecificationEntries>true</addDefaultSpecificationEntries>
-							<mainClass>TimeDependentParty</mainClass>
+							<mainClass>OurParty</mainClass>
 						</manifest>
 					</archive>
 				</configuration>

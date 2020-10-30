@@ -58,7 +58,7 @@ import java.util.stream.Collectors;
  * <p>
  * TimeDependentParty requires a {@link UtilitySpace}
  */
-public class TimeDependentParty extends DefaultParty {
+public class OurParty extends DefaultParty {
 
 	private ProfileInterface profileint;
 	private LinearAdditive utilspace = null; // last received space
@@ -70,11 +70,11 @@ public class TimeDependentParty extends DefaultParty {
 	private Votes lastvotes;
 	private Settings settings;
 
-	public TimeDependentParty() {
+	public OurParty() {
 		super();
 	}
 
-	public TimeDependentParty(Reporter reporter) {
+	public OurParty(Reporter reporter) {
 		super(reporter); // for debugging
 	}
 
