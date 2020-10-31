@@ -24,6 +24,22 @@
 				"Test required",
 				"Available in violent regions"
 			]
+		},
+		"Retirement age": {
+			"values": [
+				"65",
+				"67",
+				"70",
+				"No money after retiring"
+			]
+		},
+		"Health care": {
+			"values": [
+				"Less money",
+				"Keep as is",
+				"More money",
+				"Make all health care free"
+			]
 		}
 	}
 }

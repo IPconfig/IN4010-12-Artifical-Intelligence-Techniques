@@ -18,7 +18,8 @@
 						"Does not exist": 0.48,
 						"Can not be prevented": 1,
 						"Pretend it does not exists": 0.74,
-						"We will think about it": 0.24					}
+						"We will think about it": 0.24
+					}
 				}
 			},
 			"Gun policy": {
@@ -30,12 +31,34 @@
 						"Available in violent regions": 0.19
 					}
 				}
+			},
+			"Retirement age": {
+				"discreteutils": {
+					"valueUtilities": {
+						"65": 0.84,
+						"67": 0.65,
+						"70": 0.33,
+						"No money after retiring": 0.10
+					}
+				}
+			},
+			"Health care": {
+				"discreteutils": {
+					"valueUtilities": {
+						"Less money": 0.27,
+						"Keep as is": 0.47,
+						"More money": 0.71,
+						"Make all health care free": 0.82
+					}
+				}
 			}
 		},
 		"issueWeights": {
 			"Covid measurements": 0.55,
-			"Climate change": 0.14,
-			"Gun policy": 0.31
+			"Climate change": 0.04,
+			"Gun policy": 0.21,
+			"Retirement age": 0.08,
+			"Health care": 0.12
 		},
 		"domain": {
 			"name": "group38politicalparties",
@@ -46,22 +69,38 @@
 						"Face masks recommended",
 						"Natural selection",
 						"Social Distancing"
-						]
-					},
+					]
+				},
 				"Climate change": {
 					"values": [
 						"Does not exist",
 						"Can not be prevented",
 						"Pretend it does not exists",
 						"We will think about it"
-						]
-					},
+					]
+				},
 				"Gun policy": {
 					"values": [
 						"Available for everyone",
 						"Only for police",
 						"Test required",
 						"Available in violent regions"
+					]
+				},
+				"Retirement age": {
+					"values": [
+						"65",
+						"67",
+						"70",
+						"No money after retiring"
+					]
+				},
+				"Health care": {
+					"values": [
+						"Less money",
+						"Keep as is",
+						"More money",
+						"Make all health care free"
 					]
 				}
 			}
