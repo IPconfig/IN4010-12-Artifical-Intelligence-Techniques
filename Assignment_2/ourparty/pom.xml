@@ -178,7 +178,7 @@
 				<configuration>
 					<archive>
 						<manifest>
-							<mainClass>OurParty</mainClass>
+							<mainClass>ai2020.group38.ourparty.OurParty</mainClass>
 						</manifest>
 					</archive>
 				</configuration>
@@ -233,7 +233,7 @@
 						<manifest>
 							<addDefaultImplementationEntries>true</addDefaultImplementationEntries>
 							<addDefaultSpecificationEntries>true</addDefaultSpecificationEntries>
-							<mainClass>OurParty</mainClass>
+							<mainClass>ai2020.group38.ourparty.OurParty</mainClass>
 						</manifest>
 					</archive>
 				</configuration>
