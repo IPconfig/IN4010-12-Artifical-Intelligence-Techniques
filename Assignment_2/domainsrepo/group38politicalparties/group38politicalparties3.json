@@ -56,7 +56,7 @@
     "issueWeights": {
       "Covid measurements": 0.05,
       "Climate change": 0.10,
-      "Gun policy": 0.05
+      "Gun policy": 0.05,
       "Retirement age": 0.51,  
       "Health care": 0.29
     },

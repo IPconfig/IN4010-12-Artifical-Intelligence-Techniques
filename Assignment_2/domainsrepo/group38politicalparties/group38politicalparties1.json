@@ -30,7 +30,7 @@
 						"Available in violent regions": 0.48
 					}
 				}
-			}
+			},
 			"Retirement age": {
 				"discreteutils": {
 					"valueUtilities": {
@@ -40,7 +40,7 @@
 						"No money after retiring": 0.29
 					}
 				}
-			}
+			},
 			"Health care": {
 				"discreteutils": {
 					"valueUtilities": {
