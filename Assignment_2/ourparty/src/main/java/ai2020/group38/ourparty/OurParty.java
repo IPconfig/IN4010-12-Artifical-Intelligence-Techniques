@@ -69,10 +69,10 @@ public class OurParty extends DefaultParty {
 	private double e = 1.2;
 	private Votes lastvotes;
 	private Settings settings;
+	private Bid previousBid;
+	private BigDecimal tolerance;
 
-	public OurParty() {
-		super();
-	}
+	public OurParty() {	super();}
 
 	public OurParty(Reporter reporter) {
 		super(reporter); // for debugging
@@ -206,6 +206,7 @@ public class OurParty extends DefaultParty {
 		if (!newutilspace.equals(utilspace)) {
 			utilspace = (LinearAdditive) newutilspace;
 			extendedspace = new ExtendedUtilSpace(utilspace);
+			tolerance = extendedspace.computeTolerance();
 		}
 		return utilspace;
 	}
@@ -216,16 +217,34 @@ public class OurParty extends DefaultParty {
 	 */
 	private Bid makeBid() {
 		double time = progress.get(System.currentTimeMillis());
-
-		BigDecimal utilityGoal = getUtilityGoal(time, getE(),
-				extendedspace.getMin(), extendedspace.getMax());
-		ImmutableList<Bid> options = extendedspace.getBids(utilityGoal);
-		if (options.size() == BigInteger.ZERO) {
-			// if we can't find good bid, get max util bid....
-			options = extendedspace.getBids(extendedspace.getMax());
+		Profile p;
+		try {
+			p = profileint.getProfile();
+		} catch (IOException ex) {
+			throw new IllegalStateException(ex);
 		}
-		// pick a random one.
-		return options.get(new Random().nextInt(options.size().intValue()));
+		if (previousBid == null) {
+			previousBid = extendedspace.getBids(extendedspace.getMax()).get(0);
+			return previousBid;
+		} else {
+			ImmutableList<Bid> options = extendedspace.getBids(((UtilitySpace) p).getUtility(previousBid).subtract(tolerance));
+//			if (options.size() == BigInteger.ZERO) {
+//				// if we can't find good bid, get max util bid....
+//				options = extendedspace.getBids(extendedspace.getMax());
+//			}
+			previousBid = options.get(0);
+			return previousBid;
+		}
+//		BigDecimal utilityGoal = getUtilityGoal(time, getE(),
+//				extendedspace.getMin(), extendedspace.getMax());
+//		ImmutableList<Bid> options = extendedspace.getBids(utilityGoal);
+//		if (options.size() == BigInteger.ZERO) {
+//			// if we can't find good bid, get max util bid....
+//			options = extendedspace.getBids(extendedspace.getMax());
+//		}
+//		// pick a random one.
+//		previousBid = options.get(new Random().nextInt(options.size().intValue()));
+//		return previousBid;
 
 	}
 
