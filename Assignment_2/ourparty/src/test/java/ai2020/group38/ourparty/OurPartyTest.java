@@ -170,7 +170,7 @@ public class OurPartyTest {
 		party.notifyChange(new Finished(agreements));
 
 		verify(reporter).log(eq(Level.INFO),
-				eq("Final ourcome:Finished[agree]"));
+				eq("Final outcome:Finished[agree]"));
 	}
 
 	@Test

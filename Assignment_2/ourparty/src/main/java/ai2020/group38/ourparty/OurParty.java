@@ -19,10 +19,7 @@ import java.io.IOException;
 import java.math.BigDecimal;
 import java.math.BigInteger;
 import java.math.RoundingMode;
-import java.util.Arrays;
-import java.util.HashSet;
-import java.util.Random;
-import java.util.Set;
+import java.util.*;
 import java.util.logging.Level;
 import java.util.stream.Collectors;
 
@@ -110,7 +107,7 @@ public class OurParty extends DefaultParty {
 			} else if (info instanceof YourTurn) {
 				myTurn();
 			} else if (info instanceof Finished) {
-				getReporter().log(Level.INFO, "Final ourcome:" + info);
+				getReporter().log(Level.INFO, "Final outcome:" + info);
 			} else if (info instanceof Voting) {
 				lastvotes = vote((Voting) info);
 				getConnection().send(lastvotes);
@@ -216,7 +213,7 @@ public class OurParty extends DefaultParty {
 	 *         bid.
 	 */
 	private Bid makeBid() {
-		double time = progress.get(System.currentTimeMillis());
+		//double time = progress.get(System.currentTimeMillis());
 		Profile p;
 		try {
 			p = profileint.getProfile();
@@ -278,8 +275,14 @@ public class OurParty extends DefaultParty {
 	 */
 	private Votes vote(Voting voting) throws IOException {
 		Object val = settings.getParameters().get("minPower");
+
+		int sum = 0;
+
+		for (int i : voting.getPowers().values()) {
+			sum += i;
+		}
 		// max utility requires smallest possible group/power
-		Integer minpower = (val instanceof Integer) ? (Integer) val : 1;
+		Integer minpower = (val instanceof Integer) ? (Integer) val : (int) Math.floor(sum / 2.0 + 1);
 		val = settings.getParameters().get("maxPower");
 		Integer maxpower = (val instanceof Integer) ? (Integer) val
 				: Integer.MAX_VALUE;
