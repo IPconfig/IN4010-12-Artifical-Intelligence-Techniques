@@ -223,12 +223,14 @@ public class OurParty extends DefaultParty {
 		if (previousBid == null) {
 			previousBid = extendedspace.getBids(extendedspace.getMax()).get(0);
 			return previousBid;
-		} else {
+		} else {		// Decrease in steps of tolerance to propose a slightly worse offer
 			ImmutableList<Bid> options = extendedspace.getBids(((UtilitySpace) p).getUtility(previousBid).subtract(tolerance));
-//			if (options.size() == BigInteger.ZERO) {
-//				// if we can't find good bid, get max util bid....
-//				options = extendedspace.getBids(extendedspace.getMax());
-//			}
+			int c = 2;
+			while (options.size() == BigInteger.ZERO) {
+				// if we can't find good bid, get max util bid....
+				options = extendedspace.getBids(((UtilitySpace) p).getUtility(previousBid).subtract(tolerance.multiply(new BigDecimal(c))));
+				c++;
+			}
 			previousBid = options.get(0);
 			return previousBid;
 		}
