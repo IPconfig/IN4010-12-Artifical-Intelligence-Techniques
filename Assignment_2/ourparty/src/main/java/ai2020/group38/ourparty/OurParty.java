@@ -227,23 +227,12 @@ public class OurParty extends DefaultParty {
 			ImmutableList<Bid> options = extendedspace.getBids(((UtilitySpace) p).getUtility(previousBid).subtract(tolerance));
 			int c = 2;
 			while (options.size() == BigInteger.ZERO) {
-				// if we can't find good bid, get max util bid....
 				options = extendedspace.getBids(((UtilitySpace) p).getUtility(previousBid).subtract(tolerance.multiply(new BigDecimal(c))));
 				c++;
 			}
 			previousBid = options.get(0);
 			return previousBid;
 		}
-//		BigDecimal utilityGoal = getUtilityGoal(time, getE(),
-//				extendedspace.getMin(), extendedspace.getMax());
-//		ImmutableList<Bid> options = extendedspace.getBids(utilityGoal);
-//		if (options.size() == BigInteger.ZERO) {
-//			// if we can't find good bid, get max util bid....
-//			options = extendedspace.getBids(extendedspace.getMax());
-//		}
-//		// pick a random one.
-//		previousBid = options.get(new Random().nextInt(options.size().intValue()));
-//		return previousBid;
 
 	}
 
@@ -287,7 +276,7 @@ public class OurParty extends DefaultParty {
 		Integer minpower = (val instanceof Integer) ? (Integer) val : (int) Math.floor(sum / 2.0 + 1);
 		val = settings.getParameters().get("maxPower");
 		Integer maxpower = (val instanceof Integer) ? (Integer) val
-				: Integer.MAX_VALUE;
+				: sum;
 
 		Set<Vote> votes = voting.getBids().stream().distinct()
 				.filter(offer -> isGood(offer.getBid()))
@@ -310,10 +299,9 @@ public class OurParty extends DefaultParty {
 			throw new IllegalStateException(ex);
 		}
 		// the profile MUST contain UtilitySpace
-		double time = progress.get(System.currentTimeMillis());
+//		double time = progress.get(System.currentTimeMillis());
 		return ((UtilitySpace) profile).getUtility(bid)
-				.compareTo(getUtilityGoal(time, getE(), extendedspace.getMin(),
-						extendedspace.getMax())) >= 0;
+				.compareTo(extendedspace.getMax().multiply(new BigDecimal(0.7))) >= 0;
 
 	}
 }
