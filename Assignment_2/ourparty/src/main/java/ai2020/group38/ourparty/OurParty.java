@@ -112,6 +112,7 @@ public class OurParty extends DefaultParty {
 				lastvotes = vote((Voting) info);
 				getConnection().send(lastvotes);
 			} else if (info instanceof OptIn) {
+				lastvotes = optIn((OptIn) info);
 				getConnection().send(lastvotes);
 			}
 		} catch (Exception ex) {
@@ -277,12 +278,69 @@ public class OurParty extends DefaultParty {
 		val = settings.getParameters().get("maxPower");
 		Integer maxpower = (val instanceof Integer) ? (Integer) val
 				: sum;
-
 		Set<Vote> votes = voting.getBids().stream().distinct()
 				.filter(offer -> isGood(offer.getBid()))
 				.map(offer -> new Vote(me, offer.getBid(), minpower, maxpower))
 				.collect(Collectors.toSet());
 		return new Votes(me, votes);
+	}
+
+	/**
+	 *
+	 * @param voting the votes from all the parties
+	 * @return our updated votes after opt-in phase
+	 */
+	private Votes optIn(OptIn voting) {
+		List<Votes> votesList = voting.getVotes();
+		Set<Vote> resultSet = lastvotes.getVotes();
+		Profile profile;
+		try {
+			profile = profileint.getProfile();
+		} catch (IOException ex) {
+			throw new IllegalStateException(ex);
+		}
+		for (Votes v : votesList) { // every Votes object is a list of votes from 1 party
+			for (Vote v2 : v.getVotes()) { // goes through all votes from all parties, check if we didnt accept before and their is consensus and utility is good enough.
+				if (!accepted(v2.getBid()) && ((UtilitySpace) profile).getUtility(v2.getBid()).compareTo(extendedspace.getMax().multiply(new BigDecimal(0.51))) >= 0
+						&& checkConsensus(voting, v2.getBid())) {
+					resultSet.add(new Vote(me, v2.getBid(), 1, 9999999));
+				}
+			}
+		}
+		return new Votes(me, resultSet);
+	}
+
+	/**
+	 *
+	 * @param bid the bid to check
+	 * @return true iff we accepted this bid in our voting phase.
+	 */
+	private boolean accepted(Bid bid) {
+		for (Vote v : lastvotes.getVotes()) {
+			if (v.getBid().equals(bid))
+				return false;
+		}
+		return true;
+	}
+
+	/**
+	 * @param voting the votes from all parties
+	 * @param bid the bid to check
+	 * @return true iff there is a consensus among other parties
+	 */
+	private boolean checkConsensus(OptIn voting, Bid bid) {
+		int power = 0;
+		int minthreshold = 0;
+		for (Votes v : voting.getVotes()) {
+			if (v.getVote(bid) != null) {
+				power += 1;
+				if (v.getVote(bid).getMinPower() > minthreshold) {
+					minthreshold = v.getVote(bid).getMinPower();
+				}
+			}
+
+		}
+		return power >= minthreshold;
 	}
 
 	/**
