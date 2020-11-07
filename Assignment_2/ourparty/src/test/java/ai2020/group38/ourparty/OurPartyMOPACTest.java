@@ -138,7 +138,7 @@ public class OurPartyMOPACTest {
 		assertEquals(
 				new Votes(me,
 						Collections.singleton(
-								new Vote(me, bestBid, 2, Integer.MAX_VALUE))),
+								new Vote(me, bestBid, 2, 2))),
 				lastAction);
 	}
 
