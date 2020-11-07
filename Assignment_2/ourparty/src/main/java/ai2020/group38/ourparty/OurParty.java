@@ -77,7 +77,9 @@ public class OurParty extends DefaultParty {
 
 	@Override
 	public Capabilities getCapabilities() {
-		return new Capabilities(new HashSet<>(Arrays.asList("SAOP", "MOPAC")));
+		return new Capabilities(
+				new HashSet<>(Arrays.asList("SAOP", "AMOP", "MOPAC")),
+				Collections.singleton(Profile.class));
 	}
 
 	@Override
