@@ -294,7 +294,8 @@ public class OurParty extends DefaultParty {
 	 */
 	private Votes optIn(OptIn voting) {
 		List<Votes> votesList = voting.getVotes();
-		Set<Vote> resultSet = lastvotes.getVotes();
+		Set<Vote> resultSet = new HashSet<>(lastvotes.getVotes());
+
 		Profile profile;
 		try {
 			profile = profileint.getProfile();
@@ -303,7 +304,7 @@ public class OurParty extends DefaultParty {
 		}
 		for (Votes v : votesList) { // every Votes object is a list of votes from 1 party
 			for (Vote v2 : v.getVotes()) { // goes through all votes from all parties, check if we didnt accept before and their is consensus and utility is good enough.
-				if (!accepted(v2.getBid()) && ((UtilitySpace) profile).getUtility(v2.getBid()).compareTo(extendedspace.getMax().multiply(new BigDecimal("0.50"))) >= 0
+				if (!accepted(v2.getBid(), resultSet) && ((UtilitySpace) profile).getUtility(v2.getBid()).compareTo(extendedspace.getMax().multiply(new BigDecimal("0.50"))) >= 0
 						&& checkConsensus(voting, v2.getBid())) {
 					resultSet.add(new Vote(me, v2.getBid(), 1, 9999999));
 				}
@@ -317,12 +318,18 @@ public class OurParty extends DefaultParty {
 	 * @param bid the bid to check
 	 * @return true iff we accepted this bid in our voting phase.
 	 */
-	private boolean accepted(Bid bid) {
+	private boolean accepted(Bid bid, Set<Vote> set) {
+		for(Vote v : set) {
+			if (v.getBid().equals(bid)) {
+				return true;
+			}
+		}
+
 		for (Vote v : lastvotes.getVotes()) {
 			if (v.getBid().equals(bid))
-				return false;
+				return true;
 		}
-		return true;
+		return false;
 	}
 
 	/**
