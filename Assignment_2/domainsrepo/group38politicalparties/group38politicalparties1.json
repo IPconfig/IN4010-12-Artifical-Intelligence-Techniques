@@ -5,10 +5,10 @@
 			"Covid measurements": {
 				"discreteutils": {
 					"valueUtilities": {
-						"Complete Lockdown": 0.263,
+						"Complete Lockdown": 0.26,
 						"Face masks recommended": 0.98,
-						"Natural selection": 0.672,
-						"Social Distancing": 0.334
+						"Natural selection": 0.67,
+						"Social Distancing": 0.33
 					}
 				}
 			},

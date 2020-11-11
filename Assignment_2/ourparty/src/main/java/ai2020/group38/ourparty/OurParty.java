@@ -182,13 +182,11 @@ public class OurParty extends DefaultParty {
 		if (progress instanceof ProgressRounds) {
 			progress = ((ProgressRounds) progress).advance();
 		}
-
 	}
 
 	private void myTurn() throws IOException {
 		updateUtilSpace();
 		Bid bid = makeBid();
-
 		Action myAction;
 		if (bid == null || (lastReceivedBid != null
 				&& utilspace.getUtility(lastReceivedBid)
@@ -199,7 +197,6 @@ public class OurParty extends DefaultParty {
 			myAction = new Offer(me, bid);
 		}
 		getConnection().send(myAction);
-
 	}
 
 	private LinearAdditive updateUtilSpace() throws IOException {
@@ -217,7 +214,6 @@ public class OurParty extends DefaultParty {
 	 *         bid.
 	 */
 	private Bid makeBid() {
-		//double time = progress.get(System.currentTimeMillis());
 		Profile p;
 		try {
 			p = profileint.getProfile();
@@ -239,7 +235,6 @@ public class OurParty extends DefaultParty {
 			previousBid = options.get(0);
 			return previousBid;
 		}
-
 	}
 
 	/**
@@ -256,7 +251,6 @@ public class OurParty extends DefaultParty {
 	 */
 	protected BigDecimal getUtilityGoal(double t, double e, BigDecimal minUtil,
 			BigDecimal maxUtil) {
-
 		BigDecimal ft1 = BigDecimal.ONE;
 		if (e != 0)
 			ft1 = BigDecimal.valueOf(1 - Math.pow(t, 1 / e)).setScale(6,
@@ -272,9 +266,7 @@ public class OurParty extends DefaultParty {
 	 */
 	private Votes vote(Voting voting) throws IOException {
 		Object val = settings.getParameters().get("minPower");
-
 		int sum = 0;
-
 		for (int i : voting.getPowers().values()) {
 			sum += i;
 		}
@@ -306,7 +298,7 @@ public class OurParty extends DefaultParty {
 		}
 		for (Votes v : votesList) { // every Votes object is a list of votes from 1 party
 			for (Vote v2 : v.getVotes()) { // goes through all votes from all parties, check if we didnt accept before and their is consensus and utility is good enough.
-				if (!accepted(v2.getBid(), resultSet) && ((UtilitySpace) profile).getUtility(v2.getBid()).compareTo(extendedspace.getMax().multiply(new BigDecimal(0.50))) >= 0
+				if (!accepted(v2.getBid(), resultSet) && ((UtilitySpace) profile).getUtility(v2.getBid()).compareTo(extendedspace.getMax().multiply(new BigDecimal("0.50"))) >= 0
 						&& checkConsensus(voting, v2.getBid())) {
 					resultSet.add(new Vote(me, v2.getBid(), 1, 9999999));
 				}
@@ -348,7 +340,6 @@ public class OurParty extends DefaultParty {
 					minthreshold = v.getVote(bid).getMinPower();
 				}
 			}
-
 		}
 		return power >= minthreshold;
 	}
@@ -367,9 +358,7 @@ public class OurParty extends DefaultParty {
 			throw new IllegalStateException(ex);
 		}
 		// the profile MUST contain UtilitySpace
-//		double time = progress.get(System.currentTimeMillis());
 		return ((UtilitySpace) profile).getUtility(bid)
-				.compareTo(extendedspace.getMax().multiply(new BigDecimal(0.6))) >= 0;
-
+				.compareTo(extendedspace.getMax().multiply(new BigDecimal("0.7"))) >= 0;
 	}
 }
