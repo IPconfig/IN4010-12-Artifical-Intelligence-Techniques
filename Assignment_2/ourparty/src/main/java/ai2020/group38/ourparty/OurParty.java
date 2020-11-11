@@ -303,7 +303,7 @@ public class OurParty extends DefaultParty {
 		}
 		for (Votes v : votesList) { // every Votes object is a list of votes from 1 party
 			for (Vote v2 : v.getVotes()) { // goes through all votes from all parties, check if we didnt accept before and their is consensus and utility is good enough.
-				if (!accepted(v2.getBid()) && ((UtilitySpace) profile).getUtility(v2.getBid()).compareTo(extendedspace.getMax().multiply(new BigDecimal(0.50))) >= 0
+				if (!accepted(v2.getBid()) && ((UtilitySpace) profile).getUtility(v2.getBid()).compareTo(extendedspace.getMax().multiply(new BigDecimal("0.50"))) >= 0
 						&& checkConsensus(voting, v2.getBid())) {
 					resultSet.add(new Vote(me, v2.getBid(), 1, 9999999));
 				}
@@ -361,7 +361,7 @@ public class OurParty extends DefaultParty {
 		// the profile MUST contain UtilitySpace
 //		double time = progress.get(System.currentTimeMillis());
 		return ((UtilitySpace) profile).getUtility(bid)
-				.compareTo(extendedspace.getMax().multiply(new BigDecimal(0.7))) >= 0;
+				.compareTo(extendedspace.getMax().multiply(new BigDecimal("0.7"))) >= 0;
 
 	}
 }
