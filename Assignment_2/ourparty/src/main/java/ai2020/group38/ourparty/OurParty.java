@@ -222,7 +222,12 @@ public class OurParty extends DefaultParty {
 		}
 		if (firsttime) {
 			ImmutableList<Bid> options = extendedspace.getBids(extendedspace.getMax());
-			previousBid = options.get(new Random().nextInt(options.size().intValue()));
+			previousBid = options.get(0);
+			for (Bid b : options) {
+				if (((UtilitySpace) p).getUtility(b).compareTo(((UtilitySpace) p).getUtility(previousBid)) > 0) {
+					previousBid = b;
+				}
+			}
 			firsttime = false;
 			return previousBid;
 		} else {		// Decrease in steps of tolerance to propose a slightly worse offer
