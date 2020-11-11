@@ -68,8 +68,9 @@ public class OurParty extends DefaultParty {
 	private Settings settings;
 	private Bid previousBid;
 	private BigDecimal tolerance;
+	private boolean firsttime;
 
-	public OurParty() {	super();}
+	public OurParty() {	super(); firsttime = true;}
 
 	public OurParty(Reporter reporter) {
 		super(reporter); // for debugging
@@ -223,8 +224,10 @@ public class OurParty extends DefaultParty {
 		} catch (IOException ex) {
 			throw new IllegalStateException(ex);
 		}
-		if (previousBid == null) {
-			previousBid = extendedspace.getBids(extendedspace.getMax()).get(0);
+		if (firsttime) {
+			ImmutableList<Bid> options = extendedspace.getBids(extendedspace.getMax());
+			previousBid = options.get(new Random().nextInt(options.size().intValue()));
+			firsttime = false;
 			return previousBid;
 		} else {		// Decrease in steps of tolerance to propose a slightly worse offer
 			ImmutableList<Bid> options = extendedspace.getBids(((UtilitySpace) p).getUtility(previousBid).subtract(tolerance));
@@ -294,7 +297,7 @@ public class OurParty extends DefaultParty {
 	 */
 	private Votes optIn(OptIn voting) {
 		List<Votes> votesList = voting.getVotes();
-		Set<Vote> resultSet = lastvotes.getVotes();
+		Set<Vote> resultSet = new HashSet<>(lastvotes.getVotes());
 		Profile profile;
 		try {
 			profile = profileint.getProfile();
@@ -303,7 +306,7 @@ public class OurParty extends DefaultParty {
 		}
 		for (Votes v : votesList) { // every Votes object is a list of votes from 1 party
 			for (Vote v2 : v.getVotes()) { // goes through all votes from all parties, check if we didnt accept before and their is consensus and utility is good enough.
-				if (!accepted(v2.getBid()) && ((UtilitySpace) profile).getUtility(v2.getBid()).compareTo(extendedspace.getMax().multiply(new BigDecimal(0.50))) >= 0
+				if (!accepted(v2.getBid(), resultSet) && ((UtilitySpace) profile).getUtility(v2.getBid()).compareTo(extendedspace.getMax().multiply(new BigDecimal(0.50))) >= 0
 						&& checkConsensus(voting, v2.getBid())) {
 					resultSet.add(new Vote(me, v2.getBid(), 1, 9999999));
 				}
@@ -317,12 +320,17 @@ public class OurParty extends DefaultParty {
 	 * @param bid the bid to check
 	 * @return true iff we accepted this bid in our voting phase.
 	 */
-	private boolean accepted(Bid bid) {
+	private boolean accepted(Bid bid, Set<Vote> set) {
+		for(Vote v : set) {
+			if (v.getBid().equals(bid)) {
+				return true;
+			}
+		}
 		for (Vote v : lastvotes.getVotes()) {
 			if (v.getBid().equals(bid))
-				return false;
+				return true;
 		}
-		return true;
+		return false;
 	}
 
 	/**
@@ -361,7 +369,7 @@ public class OurParty extends DefaultParty {
 		// the profile MUST contain UtilitySpace
 //		double time = progress.get(System.currentTimeMillis());
 		return ((UtilitySpace) profile).getUtility(bid)
-				.compareTo(extendedspace.getMax().multiply(new BigDecimal(0.7))) >= 0;
+				.compareTo(extendedspace.getMax().multiply(new BigDecimal(0.6))) >= 0;
 
 	}
 }
