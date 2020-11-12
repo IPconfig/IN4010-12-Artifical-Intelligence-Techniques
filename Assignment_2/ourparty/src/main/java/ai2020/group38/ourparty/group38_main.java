@@ -260,7 +260,7 @@ public class group38_main extends DefaultParty {
 		}
 		for (Votes v : votesList) { // every Votes object is a list of votes from 1 party
 			for (Vote v2 : v.getVotes()) { // goes through all votes from all parties, check if we didnt accept before and their is consensus and utility is good enough.
-				if (!accepted(v2.getBid(), resultSet) && ((UtilitySpace) profile).getUtility(v2.getBid()).compareTo(extendedspace.getMax().multiply(new BigDecimal("0.50"))) >= 0
+				if (!accepted(v2.getBid(), resultSet) && ((UtilitySpace) profile).getUtility(v2.getBid()).compareTo(extendedspace.getMax().multiply(new BigDecimal("0.501"))) >= 0
 						&& checkConsensus(voting, v2.getBid())) {
 					resultSet.add(new Vote(me, v2.getBid(), 1, 9999999));
 				}
