@@ -34,14 +34,14 @@ import static org.junit.Assert.*;
 import static org.mockito.Matchers.eq;
 import static org.mockito.Mockito.*;
 
-public class OurPartyTest {
+public class group38mainTest {
 
 	private static final String SAOP = "SAOP";
 	private static final PartyId otherparty = new PartyId("other");
 	private static final String PROFILE = "src/test/resources/testprofile.json";
 	private final static ObjectMapper jackson = new ObjectMapper();
 
-	private OurParty party;
+	private group38_main party;
 	private TestConnection connection = new TestConnection();
 	private ProtocolRef protocol = new ProtocolRef("SAOP");
 	private ProgressRounds progress = mock(ProgressRounds.class);
@@ -52,7 +52,7 @@ public class OurPartyTest {
 	@Before
 	public void before() throws JsonParseException, JsonMappingException,
 			IOException, URISyntaxException {
-		party = new OurParty() {
+		party = new group38_main() {
 
 			@Override
 			public String getDescription() {
@@ -150,7 +150,7 @@ public class OurPartyTest {
 	public void testPartyLogsFinal() {
 		// this log output is optional, this is to show how to check log
 		Reporter reporter = mock(Reporter.class);
-		party = new OurParty(reporter) {
+		party = new group38_main(reporter) {
 
 			@Override
 			public String getDescription() {
@@ -189,7 +189,7 @@ public class OurPartyTest {
 
 	@Test
 	public void testUtilityTarget() {
-		OurParty tdp = new OurParty();
+		group38_main tdp = new group38_main();
 		BigDecimal N02 = new BigDecimal("0.2");
 		BigDecimal N043 = new BigDecimal("0.42521212");
 		BigDecimal goal = tdp.getUtilityGoal(0.1, 1.2, N02, N043);

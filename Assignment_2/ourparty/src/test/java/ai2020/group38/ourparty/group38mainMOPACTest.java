@@ -37,7 +37,7 @@ import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
 import static org.mockito.Mockito.mock;
 
-public class OurPartyMOPACTest {
+public class group38mainMOPACTest {
 
 	private static final PartyId me = new PartyId("me");
 	private static final PartyId otherparty = new PartyId("other");
@@ -45,7 +45,7 @@ public class OurPartyMOPACTest {
 	private static final String PROFILE = "src/test/resources/testprofile.json";
 	private final static ObjectMapper jackson = new ObjectMapper();
 
-	private OurParty party;
+	private group38_main party;
 	private TestConnection connection = new TestConnection();
 	private ProtocolRef protocol = new ProtocolRef("MOPAC");
 	private ProgressRounds progress = mock(ProgressRounds.class);
@@ -61,7 +61,7 @@ public class OurPartyMOPACTest {
 		powers.put(me, 1);
 		powers.put(otherparty, 1);
 
-		party = new OurParty() {
+		party = new group38_main() {
 
 			@Override
 			public String getDescription() {

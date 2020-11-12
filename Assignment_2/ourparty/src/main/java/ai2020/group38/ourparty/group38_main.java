@@ -23,39 +23,8 @@ import java.util.*;
 import java.util.logging.Level;
 import java.util.stream.Collectors;
 
-/**
- * General time dependent party. This is a simplistic implementation that does
- * brute-force search through the bidspace and can handle bidspace sizes up to
- * 2^31 (approx 1 billion bids). It may take excessive time and run out of time
- * on bidspaces &gt; 10000 bids. In special cases it may even run out of memory,
- *
- * <p>
- * Supports parameters as follows
- * <table summary="parameters">
- * <tr>
- * <td>e</td>
- * <td>e determines how fast the party makes concessions with time. Typically
- * around 1. 0 means no concession, 1 linear concession, &gt;1 faster than
- * linear concession.</td>
- * </tr>
- *
- * <tr>
- * <td>minPower</td>
- * <td>This value is used as minPower for placed {@link Vote}s. Default value is
- * 1.</td>
- * </tr>
- *
- * <tr>
- * <td>maxPower</td>
- * <td>This value is used as maxPower for placed {@link Vote}s. Default value is
- * infinity.</td>
- * </tr>
- *
- * </table>
- * <p>
- * TimeDependentParty requires a {@link UtilitySpace}
- */
-public class OurParty extends DefaultParty {
+
+public class group38_main extends DefaultParty {
 
 	private ProfileInterface profileint;
 	private LinearAdditive utilspace = null; // last received space
@@ -70,9 +39,9 @@ public class OurParty extends DefaultParty {
 	private BigDecimal tolerance;
 	private boolean firsttime;
 
-	public OurParty() {	super(); firsttime = true;}
+	public group38_main() {	super(); firsttime = true;}
 
-	public OurParty(Reporter reporter) {
+	public group38_main(Reporter reporter) {
 		super(reporter); // for debugging
 	}
 
@@ -127,14 +96,7 @@ public class OurParty extends DefaultParty {
 	/**
 	 * @return the E value that controls the party's behaviour. Depending on the
 	 *         value of e, extreme sets show clearly different patterns of
-	 *         behaviour [1]:
-	 *
-	 *         1. Boulware: For this strategy e &lt; 1 and the initial offer is
-	 *         maintained till time is almost exhausted, when the agent concedes
-	 *         up to its reservation value.
-	 *
-	 *         2. Conceder: For this strategy e &gt; 1 and the agent goes to its
-	 *         reservation value very quickly.
+	 *         behaviour [1]:.
 	 *
 	 *         3. When e = 1, the price is increased linearly.
 	 *
@@ -146,20 +108,14 @@ public class OurParty extends DefaultParty {
 
 	@Override
 	public String getDescription() {
-		return "Time-dependent conceder. Aims at utility u(t) = scale * t^(1/e) "
-				+ "where t is the time (0=start, 1=end), e is the concession speed parameter (default 1.1), and scale such that u(0)=minimum and "
-				+ "u(1) = maximum possible utility. Parameters minPower (default 1) and maxPower (default infinity) are used "
-				+ "when voting";
+		return "The strategy our party is using is : giving the maximum utility of his choices on bid phase "
+				+ "and then decreasing for each round to his next best option. For example first round we give "
+				+ "our best bid (max utility), second round we get our second highest bid, etc.. "
+				+ "On the voting phase our agent accepts an agreement if it has 60% of the majority and "
+				+ "final on the opt-in phase if we don't have find an agreement on voting phase, we take into "
+				+ "account our rejected bids, and if there is an agreement somewhere with a majority of 50% we accept that eventually.";
 	}
 
-	/******************* private support funcs ************************/
-
-	/**
-	 * Update {@link #progress}, depending on the protocol and last received
-	 * {@link Inform}
-	 *
-	 * @param info the received info.
-	 */
 	private void updateRound(Inform info) {
 		if (settings == null) // not yet initialized
 			return;
@@ -183,6 +139,7 @@ public class OurParty extends DefaultParty {
 			progress = ((ProgressRounds) progress).advance();
 		}
 	}
+	// what our agent does on his turn.
 
 	private void myTurn() throws IOException {
 		updateUtilSpace();
