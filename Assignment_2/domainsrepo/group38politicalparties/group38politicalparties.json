@@ -13,15 +13,15 @@
 			"values": [
 				"Does not exist",
 				"Can not be prevented",
-				"Pretend it does not exists",
-				"We will think about it"
+				"Stimulate going green",
+				"The polluters pay"
 			]
 		},
 		"Gun policy": {
 			"values": [
 				"Available for everyone",
-				"Only for police",
-				"Test required",
+				"Law enforcement only",
+				"License required",
 				"Available in violent regions"
 			]
 		},
@@ -30,15 +30,15 @@
 				"65",
 				"67",
 				"70",
-				"No money after retiring"
+				"-"
 			]
 		},
-		"Health care": {
+		"Healthcare": {
 			"values": [
-				"Less money",
-				"Keep as is",
-				"More money",
-				"Make all health care free"
+				"Privatized",
+				"Keep as it is",
+				"Cut costs",
+				"Free universal healthcare"
 			]
 		}
 	}

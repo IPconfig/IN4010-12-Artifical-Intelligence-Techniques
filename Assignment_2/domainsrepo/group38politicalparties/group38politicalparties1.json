@@ -7,57 +7,58 @@
 					"valueUtilities": {
 						"Complete Lockdown": 0.26,
 						"Face masks recommended": 0.98,
-						"Natural selection": 0.67,
-						"Social Distancing": 0.33
+						"Natural selection": 0.01,
+						"Social Distancing": 0.67
 					}
 				}
 			},
 			"Climate change": {
 				"discreteutils": {
 					"valueUtilities": {
-						"Does not exist": 0.52,
+						"Does not exist": 0.05,
 						"Can not be prevented": 0.23,
-						"Pretend it does not exists": 0.99,
-						"We will think about it": 0.77					}
+						"Stimulate going green": 0.99,
+						"The polluters pay": 0.77
+					}
 				}
 			},
 			"Gun policy": {
 				"discreteutils": {
 					"valueUtilities": {
 						"Available for everyone": 0.24,
-						"Only for police": 0.74,
-						"Test required": 1,
-						"Available in violent regions": 0.48
+						"Law enforcement only": 0.74,
+						"License required": 1,
+						"Available in violent regions": 0.08
 					}
 				}
 			},
 			"Retirement age": {
 				"discreteutils": {
 					"valueUtilities": {
-						"65": 0.24,
+						"65": 0.14,
 						"67": 0.67,
 						"70": 0.88,
-						"No money after retiring": 0.29
+						"-": 0.29
 					}
 				}
 			},
-			"Health care": {
+			"Healthcare": {
 				"discreteutils": {
 					"valueUtilities": {
-						"Less money":  0.67,
-						"Keep as is":  0.87,
-						"More money":  0.31,
-						"Make all health care free":  0.11
+						"Privatized": 0.07,
+						"Keep as it is": 0.87,
+						"Cut costs": 0.31,
+						"Free universal healthcare": 0.91
 					}
 				}
 			}
 		},
 		"issueWeights": {
-			"Covid measurements": 0.09,
-			"Climate change": 0.48,
-			"Gun policy": 0.23,
-			"Retirement age": 0.15,
-			"Health care": 0.05
+			"Covid measurements": 0.22,
+			"Climate change": 0.30,
+			"Gun policy": 0.20,
+			"Retirement age": 0.13,
+			"Healthcare": 0.15
 		},
 		"domain": {
 			"name": "group38politicalparties",
@@ -74,15 +75,15 @@
 					"values": [
 						"Does not exist",
 						"Can not be prevented",
-						"Pretend it does not exists",
-						"We will think about it"
+						"Stimulate going green",
+						"The polluters pay"
 					]
 				},
 				"Gun policy": {
 					"values": [
 						"Available for everyone",
-						"Only for police",
-						"Test required",
+						"Law enforcement only",
+						"License required",
 						"Available in violent regions"
 					]
 				},
@@ -91,15 +92,15 @@
 						"65",
 						"67",
 						"70",
-						"No money after retiring"
+						"-"
 					]
 				},
-				"Health care": {
+				"Healthcare": {
 					"values": [
-						"Less money",
-						"Keep as is",
-						"More money",
-						"Make all health care free"
+						"Privatized",
+						"Keep as it is",
+						"Cut costs",
+						"Free universal healthcare"
 					]
 				}
 			}
