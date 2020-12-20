@@ -38,15 +38,15 @@ class QLearner():
         """
 
         if not done:
-            if self.q_table[state, action] != -99:
+            if self.q_table[state, action] != np.NINF:
                 if self.col_state(state) == 0 and action == 0:
-                    self.q_table[state, action] = -99
+                    self.q_table[state, action] = np.NINF
                 elif self.col_state(state) == self.num_cols - 1 and action == 2:
-                    self.q_table[state, action] = -99
+                    self.q_table[state, action] = np.NINF
                 elif self.row_state(state) == 0 and action == 3:
-                    self.q_table[state, action] = -99
+                    self.q_table[state, action] = np.NINF
                 elif self.row_state(state) == self.num_rows - 1 and action == 1:
-                    self.q_table[state, action] = -99
+                    self.q_table[state, action] = np.NINF
                 else:    
                     self.q_table[state, action] = (1-LEARNINGRATE) * self.q_table[state, action] + \
                         LEARNINGRATE * (reward + DEFAULT_DISCOUNT * np.argmax(self.q_table[next_state, :]))
