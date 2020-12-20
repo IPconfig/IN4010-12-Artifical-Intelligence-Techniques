@@ -4,7 +4,10 @@ NUM_EPISODES = 1000
 MAX_EPISODE_LENGTH = 500
 
 DEFAULT_DISCOUNT = 0.9
-EPSILON = 0.2
+EPSILON = 1
+EXPLORATON_DECAY_RATE = 0.015
+MIN_EXPLORATION_RATE = 0.1
+MAX_EXPLORATION_RATE = 1 
 LEARNINGRATE = 0.1
 
 
@@ -60,6 +63,7 @@ class QLearner():
             biggest_values = np.argwhere(self.q_table[state, :] == np.amax(self.q_table[state, :]))
             biggest_values = biggest_values.flatten().tolist()
             return np.random.choice(biggest_values)
+            #return np.argmax(self.q_table[state, :])
         # Otherwise choose a random action. 
             # from the state "state" pick a random action between 0 to 3.
             # return self.q_table[state,np.random.randint(4)]

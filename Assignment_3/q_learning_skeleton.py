@@ -34,14 +34,18 @@ class QLearner():
         """
         if random.uniform(0, 1) < EPSILON:
             """
-            Exploit: select the action with max value (future reward)
-            """
-            action = np.argmax(self.ql[state, :])
-        else:
-            """
             Explore: select a random action
             """
             action = random.randint(0,3)
+        else:
+            """
+            Exploit: select the action with max value (future reward)
+            If there are multiple max values, return a random action
+            """
+            biggest_values = np.argwhere(self.ql[state, :] == np.max(self.ql[state, :]))
+            biggest_values = biggest_values.flatten().tolist()
+            action = np.random.choice(biggest_values)
+
         return action
 
 

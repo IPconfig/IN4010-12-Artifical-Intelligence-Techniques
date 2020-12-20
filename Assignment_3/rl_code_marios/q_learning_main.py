@@ -28,6 +28,10 @@ def getShortestPath(begin, end, Q_table, env):
 
 def act_loop(env, agent, num_episodes):
     for episode in range(num_episodes):
+        EPSILON = MIN_EXPLORATION_RATE + \
+        (MAX_EXPLORATION_RATE - MIN_EXPLORATION_RATE) * np.exp(-EXPLORATON_DECAY_RATE*episode)
+        print(EPSILON)
+        #if EPSILON <= 0.2: time.sleep(3)
         state = env.reset()
         print('---episode %d---' % episode)
         renderit = False
@@ -64,6 +68,7 @@ def act_loop(env, agent, num_episodes):
                 env.render()
                 agent.report()
                 break
+
         #print(ql.q_table)
         #time.sleep(3)
     env.close()
@@ -82,7 +87,9 @@ if __name__ == "__main__":
     discount = DEFAULT_DISCOUNT
     ql = QLearner(num_o, num_a, env.nrow, env.ncol, discount) #<- QTable
     act_loop(env, ql, NUM_EPISODES)
+    # display the array without scientific notation.
     np.set_printoptions(suppress=True)
+
     print(ql.q_table)
     #Shortest_Path, optimal_actions = getShortestPath(0, 47, ql.q_table, env)
     
