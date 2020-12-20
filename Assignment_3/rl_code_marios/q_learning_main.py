@@ -70,8 +70,8 @@ def act_loop(env, agent, num_episodes):
 
 
 if __name__ == "__main__":
-    env = simple_grid.DrunkenWalkEnv(map_name="walkInThePark")
-    #env = simple_grid.DrunkenWalkEnv(map_name="theAlley")
+    #env = simple_grid.DrunkenWalkEnv(map_name="walkInThePark")
+    env = simple_grid.DrunkenWalkEnv(map_name="theAlley")
     num_a = env.action_space.n
 
     if (type(env.observation_space)  == gym.spaces.discrete.Discrete):
@@ -80,8 +80,9 @@ if __name__ == "__main__":
         raise("Qtable only works for discrete observations")
 
     discount = DEFAULT_DISCOUNT
-    ql = QLearner(num_o, num_a, discount) #<- QTable
+    ql = QLearner(num_o, num_a, env.nrow, env.ncol, discount) #<- QTable
     act_loop(env, ql, NUM_EPISODES)
+    np.set_printoptions(suppress=True)
     print(ql.q_table)
     #Shortest_Path, optimal_actions = getShortestPath(0, 47, ql.q_table, env)
     
