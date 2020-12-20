@@ -36,6 +36,8 @@ MANIFEST
 # Assignment specific
 Assignment 2/randompartypy/randompyparty.iml
 
+Assignment_3/AIT/*
+*.cfg
 
 # PyInstaller
 #  Usually these files are written by a python script from a template
@@ -148,3 +150,4 @@ dmypy.json
 # Cython debug symbols
 cython_debug/
 *.iml
+*.json
