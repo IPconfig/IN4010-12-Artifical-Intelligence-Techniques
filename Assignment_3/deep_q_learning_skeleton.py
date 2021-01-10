@@ -26,11 +26,11 @@ LEARNINGRATENET = 0.0001  # QNET
 class ReplayMemory(object):
     # ReplayMemory should store the last "size" experiences
     # and be able to return a randomly sampled batch of experiences
-    def __init__(self, size, shape_o = (9, )):
+    def __init__(self, size, shape_observation = (9, )):
         self.mem_size = size
         self.mem_ctr = 0
-        self.state_memory = np.zeros((self.mem_size, *shape_o), dtype = np.int32)
-        self.new_state_memory = np.zeros((self.mem_size, *shape_o), dtype = np.int32)  
+        self.state_memory = np.zeros((self.mem_size, *shape_observation), dtype = np.int64)
+        self.new_state_memory = np.zeros((self.mem_size, *shape_observation), dtype = np.int64)  
         self.action_memory = np.zeros(self.mem_size, dtype = np.int64)
         self.reward_memory = np.zeros(self.mem_size, dtype = np.float32)
         self.terminal_memory = np.zeros(self.mem_size, dtype = np.uint8)
@@ -118,7 +118,7 @@ class QNet(nn.Module):
 
         return q
 
-    def single_Q_update(self, prev_observation, action, observation, reward, done):
+    def single_Q_update(self, prev_observation, action, observation, reward, done, fu_val = 0):
         """ action and observation need to be in the format that QNet was constructed for.
             I.e., if observation is a discrete variable (with say N values=states), but QNet
             is working on one-hot vectors (of length N), then observation needs to be such a
@@ -128,11 +128,11 @@ class QNet(nn.Module):
         """
         t_observation = self.obs_to_tensor(observation)
         t_prev_obs = self.obs_to_tensor(prev_observation)
-
-        if done:
-            future_val = 0  # XXX<- needs to be a 0-tensor?
-        else:
-            future_val = self.max_Q_value(t_observation)  ##<<- this evaluates the QNet
+        future_val = fu_val
+        # if done:
+        #     future_val = 0  # XXX<- needs to be a 0-tensor?
+        # else:
+        #     future_val = self.max_Q_value(t_observation)  ##<<- this evaluates the QNet
         # We just evaluated the Qnet for the next-stage variables, but of course... the effect of the Qnet
         # parameters on the *next-stage* value is ignored by Q-learning.
         # So... we need to reset the gradients. (otherwise they accumulate e.g., see;
@@ -160,14 +160,14 @@ class QNet(nn.Module):
         debug_utils.debug_q_update(prev_observation, action, observation, reward, done, predict, self.discount, future_val,
                                    target, td, new_q)
 
-    def batch_Q_update(self, obs, actions, next_obs, rewards, dones):
+    def batch_Q_update(self, obs, actions, next_obs, rewards, dones, qtarget = 0):
 
         batch_size = len(dones)
-        v_next_obs = self.max_Q_value(next_obs, batch_size)
-        not_dones = 1 - dones
-        fut_values = self.discount * v_next_obs * not_dones
-        targets = rewards + fut_values
-
+        # v_next_obs = self.max_Q_value(next_obs, batch_size)
+        # not_dones = 1 - dones
+        # fut_values = self.discount * v_next_obs * not_dones
+        # targets = rewards + fut_values
+        targets = qtarget
         self.zero_grad()
         q_pred = self.get_Q(obs, actions, batch_size)
         loss = self.loss_fn(q_pred, torch.tensor(targets, dtype=torch.float))
@@ -213,9 +213,10 @@ class QNet_MLP(QNet):
 
 
 class QLearner(object):
-    def __init__(self, env, q_function, discount=DEFAULT_DISCOUNT, rm_size=RMSIZE):
+    def __init__(self, env, q_function, target_qn = None, discount=DEFAULT_DISCOUNT, rm_size=RMSIZE):
         self.env = env
         self.Q = q_function
+        self.Q_target = target_qn
         self.rm = ReplayMemory(rm_size)  # replay memory stores (a subset of) experience across episode
         self.discount = discount
 
@@ -243,27 +244,41 @@ class QLearner(object):
         if self.epsilon > self.epsilon_min:
             self.epsilon *= self.epsilon_decay # Decay epsilon
 
+        # At the end of every episode set θ− = θ
+        self.Q_target.load_state_dict(self.Q.state_dict())
+
     def process_experience(self, action, observation, reward, done):
         prev_obs = self.last_obs
         self.cum_r += reward
         self.dis_r += reward * (self.discount ** self.stage)
         self.stage += 1
-        self.Q.single_Q_update(prev_obs, action, observation, reward, done)
-        self.last_obs = observation
+
         self.rm.store_experience(prev_obs, action, observation,reward, done)
 
-        # TODO coding exercise 1: Do a batch update using experience stored in the replay memory
-        # if self.tot_stages > 10 * self.batch_size:
-            # sample a batch of batch_size from the replay memory
-            # and update the network using this batch (batch_Q_update)
+        
+        self.last_obs = observation
+        
 
-        # if self.tot_stages > 10 * self.batch_size:
-        #     sample_batch = sample_batch(self.rm, self.batch_size)
-        #     batch_Q_update(sample_batch.)
+
+        t_observation = self.Q_target.obs_to_tensor(observation)
+        if done:
+           future_val = 0  # XXX<- needs to be a 0-tensor?
+        else:
+           future_val = self.Q_target.max_Q_value(t_observation)  ##<<- this evaluates the QNet     #based on theta- , 
+           self.Q.single_Q_update(prev_obs, action, observation, reward, done, future_val)
+
         if self.tot_stages > 10 * self.batch_size:                    
             states, action, rewards, states_, dones = self.rm.sample_batch(self.batch_size)
-            self.Q.batch_Q_update(states, action, states_, rewards, dones)
 
+            qtarget_next_obs = self.Q_target.max_Q_value(states_, len(dones))
+            qtarget_fut_values = self.Q_target.discount * qtarget_next_obs * (1 - dones)
+            qtargets = rewards + qtarget_fut_values
+            self.Q.batch_Q_update(states, action, states_, rewards, dones, qtargets)
+
+
+        
+
+        
 
 
     def select_action(self, obs):
