@@ -23,20 +23,40 @@ EPSILON = 1
 LEARNINGRATENET = 0.0001  # QNET
 
 
-# TODO coding exercise 1: implement experience replay
 class ReplayMemory(object):
     # ReplayMemory should store the last "size" experiences
     # and be able to return a randomly sampled batch of experiences
-    def __init__(self, size):
+    def __init__(self, size, shape_o = (9, )):
+        self.mem_size = size
+        self.mem_ctr = 0
+        self.state_memory = np.zeros((self.mem_size, *shape_o), dtype = np.int32)
+        self.new_state_memory = np.zeros((self.mem_size, *shape_o), dtype = np.int32)  
+        self.action_memory = np.zeros(self.mem_size, dtype = np.int64)
+        self.reward_memory = np.zeros(self.mem_size, dtype = np.float32)
+        self.terminal_memory = np.zeros(self.mem_size, dtype = np.uint8)
         pass
 
     # Store experience in memory
     def store_experience(self, prev_obs, action, observation, reward, done):
+        index = self.mem_ctr % self.mem_size
+        self.state_memory[index] = prev_obs
+        self.new_state_memory[index] = observation
+        self.action_memory[index] = action
+        self.reward_memory[index] = reward
+        self.terminal_memory[index] = done
+        self.mem_ctr += 1
         pass
 
     # Randomly sample "batch_size" experiences from the memory and return them
     def sample_batch(self, batch_size):
-        pass
+        max_mem = min(self.mem_ctr, self.mem_size)
+        batch = np.random.choice(max_mem, batch_size, replace = False)
+        states = self.state_memory[batch]
+        actions = self.action_memory[batch]
+        rewards = self.reward_memory[batch]
+        states_ = self.new_state_memory[batch]
+        terminal = self.terminal_memory[batch]
+        return states, actions, rewards, states_, terminal
 
 
 # DEBUG=True
@@ -235,6 +255,20 @@ class QLearner(object):
         # if self.tot_stages > 10 * self.batch_size:
             # sample a batch of batch_size from the replay memory
             # and update the network using this batch (batch_Q_update)
+
+        # if self.tot_stages > 10 * self.batch_size:
+        #     sample_batch = sample_batch(self.rm, self.batch_size)
+        #     batch_Q_update(sample_batch.)
+        if self.tot_stages > 10 * self.batch_size:                    
+           states, action, rewards, states_, terminal = self.rm.sample_batch(self.batch_size)
+
+           qtarget_next_obs = max_Q_value(states_, len(terminal))
+           qtarget_fut_values = Q_target.discount * qtarget_next_obs * (1 - terminal)
+           qtargets = rewards + qtarget_fut_values
+           
+           self.Q.batch_Q_update(states, action, states_, rewards, terminal, qtargets)
+            # batch_Q_update(self, obs, actions, next_obs, rewards, dones):
+
 
 
     def select_action(self, obs):
