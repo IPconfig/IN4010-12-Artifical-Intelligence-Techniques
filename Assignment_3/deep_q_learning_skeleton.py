@@ -250,6 +250,7 @@ class QLearner(object):
         self.stage += 1
         self.Q.single_Q_update(prev_obs, action, observation, reward, done)
         self.last_obs = observation
+        self.rm.store_experience(prev_obs, action, observation,reward, done)
 
         # TODO coding exercise 1: Do a batch update using experience stored in the replay memory
         # if self.tot_stages > 10 * self.batch_size:
@@ -260,14 +261,8 @@ class QLearner(object):
         #     sample_batch = sample_batch(self.rm, self.batch_size)
         #     batch_Q_update(sample_batch.)
         if self.tot_stages > 10 * self.batch_size:                    
-           states, action, rewards, states_, terminal = self.rm.sample_batch(self.batch_size)
-
-           qtarget_next_obs = max_Q_value(states_, len(terminal))
-           qtarget_fut_values = Q_target.discount * qtarget_next_obs * (1 - terminal)
-           qtargets = rewards + qtarget_fut_values
-           
-           self.Q.batch_Q_update(states, action, states_, rewards, terminal, qtargets)
-            # batch_Q_update(self, obs, actions, next_obs, rewards, dones):
+            states, action, rewards, states_, dones = self.rm.sample_batch(self.batch_size)
+            self.Q.batch_Q_update(states, action, states_, rewards, dones)
 
 
 
