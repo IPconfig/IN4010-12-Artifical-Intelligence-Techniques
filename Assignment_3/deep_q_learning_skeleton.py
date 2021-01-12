@@ -23,7 +23,6 @@ EPSILON = 1
 LEARNINGRATENET = 0.0001  # QNET
 
 
-# TODO coding exercise 1: implement experience replay
 class ReplayMemory(object):
     
     
@@ -32,7 +31,7 @@ class ReplayMemory(object):
     def __init__(self, size, shape=(9, )):
         self.filled = 0
         self.maxsize = size
-        self.obs = np.zeros((self.maxsize, *shape))
+        self.obs = np.zeros((self.maxsize, *shape)) # using the shape found in main file for observations
         self.actions = np.zeros(self.maxsize)
         self.new_obs = np.zeros((self.maxsize, *shape))
         self.rewards = np.zeros(self.maxsize)
@@ -128,8 +127,10 @@ class QNet(nn.Module):
         """
         t_observation = self.obs_to_tensor(observation)
         t_prev_obs = self.obs_to_tensor(prev_observation)
-
-          ##<<- this evaluates the QNet
+        # if done:
+        #     future_val = 0  # XXX<- needs to be a 0-tensor?
+        # else:
+        #     future_val = self.max_Q_value(t_observation)  ##<<- this evaluates the QNet
         # We just evaluated the Qnet for the next-stage variables, but of course... the effect of the Qnet
         # parameters on the *next-stage* value is ignored by Q-learning.
         # So... we need to reset the gradients. (otherwise they accumulate e.g., see;
@@ -244,6 +245,9 @@ class QLearner(object):
         if self.epsilon > self.epsilon_min:
             self.epsilon *= self.epsilon_decay # Decay epsilon
 
+        # At the end of every episode set θ− = θ
+        self.Q_target.load_state_dict(self.Q.state_dict())
+
     def process_experience(self, action, observation, reward, done):
         prev_obs = self.last_obs
         self.cum_r += reward
@@ -260,6 +264,7 @@ class QLearner(object):
 
         self.Q.single_Q_update(prev_obs, action, observation, reward, done, future_val)
         self.last_obs = observation
+       
 
         # TODO coding exercise 1: Do a batch update using experience stored in the replay memory
         # if self.tot_stages > 10 * self.batch_size:
@@ -274,16 +279,6 @@ class QLearner(object):
             targets = target_val + r
 
             self.Q.batch_Q_update(o, a, no, r, d, targets) #dones would be nice to have correct.
-
-        
-
-    def getColumn(self, vectorList, i):
-        r = []
-        for entry in vectorList:
-            if entry is None:
-                break
-            r.append(entry[i])
-        return r
 
     def select_action(self, obs):
         """select an action based in self.last_obs
