@@ -245,9 +245,6 @@ class QLearner(object):
         if self.epsilon > self.epsilon_min:
             self.epsilon *= self.epsilon_decay # Decay epsilon
 
-        # At the end of every episode set θ− = θ
-        self.Q_target.load_state_dict(self.Q.state_dict())
-
     def process_experience(self, action, observation, reward, done):
         prev_obs = self.last_obs
         self.cum_r += reward
